@@ -1,0 +1,53 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+def newton_raphson(f, df, x0, tol):
+    iterations=[]
+    i=0
+    while abs(f(x0))>tol:
+        i+=1
+        x=x0-f(x0)/df(x0) 
+        absolute_error=abs(x-x0) 
+        relative_error=absolute_error/x if x!=0 else float('inf')
+        iterations.append((i, x, absolute_error, relative_error))
+        x0=x
+    return x,iterations
+
+def f(x):
+    return x**2-3*x+2
+def df(x):
+    return 2*x-3
+
+root, iterations= newton_raphson(f, df, 2.5, 1e-6)
+
+print("Iteration Table")
+for i, x, abs_err, rel_err in iterations:
+    print(f"Iteration {i}, Current Guess {x}, Absolute Error {abs_err}, Relative Error {rel_err}")
+
+print(f"Root: {root}")
+
+iteration_nums = [it[0] for it in iterations]
+absolute_errors = [it[2] for it in iterations]
+
+plt.figure(figsize=(8, 6))
+plt.plot(iteration_nums, absolute_errors, marker='o', label='Absolute Error')
+plt.xlabel("Iteration Number")
+plt.ylabel("Absolute Error")
+plt.title("Convergence of Newton-Raphson Method")
+plt.yscale('log')  
+plt.grid()
+plt.legend()
+plt.show()
+
+x=np.linspace(0,3,500)
+y=f(x)
+
+plt.figure(figsize=(8, 6))
+plt.plot(x, y, label="f(x)=x^2-3x+2")
+plt.axhline(0, color='red', linestyle='--', label="y = 0")
+plt.xlabel("x")
+plt.ylabel("f(x)")
+plt.title("Graphical method for x^2-3x+2")
+plt.legend()
+plt.grid()
+plt.show()
