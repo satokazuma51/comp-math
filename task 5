@@ -1,0 +1,56 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+def false_position_method(f, a, b, tol):
+    if f(a) * f(b) >= 0:
+        print("Invalid initial values. f(a) and f(b) must be of different signs.")
+        return None
+    
+    iterations = [] 
+    c = a          
+    prev_c = None   
+    i = 0           
+
+    while True:
+        i += 1
+        c = b - f(b) * (b - a) / (f(b) - f(a))
+      
+        if prev_c is not None:
+            abs_err = abs(c - prev_c) 
+            rel_err = abs_err / abs(c) if c != 0 else np.inf  
+        else:
+            abs_err, rel_err = np.inf, np.inf  # First iteration
+
+        iterations.append((i, c, abs_err, rel_err))
+
+        if abs(f(c)) <= tol:
+            break
+
+        if f(a) * f(c) < 0:
+            b = c
+        else:
+            a = c
+        
+        prev_c = c 
+
+    return c, iterations
+
+def f(x):
+    return x**2-2**x  
+def absolute_error(xapprox):
+    return 
+
+root,iterations = false_position_method(f, 0, 3, 1e-6)
+
+print(f"Root: {root}")
+print("Iteration Table")
+for i, c, abs_err, rel_err in iterations:
+    print(f"Iteration {i}, Current Guess {c}, Absolute Error {abs_err}, Relative Error {rel_err}")
+
+abs_errors = [abs_err for _, _, abs_err, _ in iterations]
+plt.plot(range(1, len(abs_errors) + 1), abs_errors, marker='o', linestyle='-')
+plt.xlabel('Iteration Number')
+plt.ylabel('Absolute Error')
+plt.title('Absolute Error vs Iteration Number (False Position Method)')
+plt.grid()
+plt.show()
