@@ -1,0 +1,40 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+def newton_raphson(f,df,x0,tol):
+    x=x0
+    while abs(f(x))>tol:
+        x=x-f(x)/df(x) # Formula
+    return x
+
+def f(x):
+    return x**3-(2*(x**2))-5
+
+def df(x):
+    return 3*x**2-4*x
+
+root=newton_raphson(f,df,2.5,1e-6)
+print(f"Root: {root}")
+
+x=np.linspace(1,4,500) # Range of x values
+y=f(x)
+
+def calculate_error(true_value, approx_value):
+    absolute_error=abs(true_value - approx_value) # absolute error
+    return absolute_error
+
+true_value=2.6906474992568943 # true value
+approx_value=2.5 # approx value
+absolute_error=calculate_error(true_value, approx_value)
+
+print(f"Absolute error: {absolute_error}")
+
+plt.figure(figsize=(8,6))
+plt.plot(x,y,label="f(x)=x^3-2x^2-5")
+plt.axhline(0, color='red', linestyle='--', label='y=0')
+plt.xlabel("x")
+plt.ylabel("f(x)")
+plt.title("Graphical method")
+plt.legend()
+plt.grid()
+plt.show()
