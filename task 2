@@ -1,0 +1,62 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+def bisection_method(f,a,b,tol):
+    if f(a)*f(b) >= 0:
+        print("Invalid initial values. f(a) and f(b) must be of different signs.")
+        return None
+
+    iteration=0
+    
+    midpoint = (a+b)/2
+    while abs(f(midpoint)) > tol:
+        iteration += 1
+        if f(a)*f(midpoint) < 0:
+            b=midpoint
+        else:
+            a=midpoint
+        midpoint=(a+b)/2
+    print(f"Bisection iteration: {iteration}")
+    return midpoint
+
+def secant_method(f, x0, x1, tol):
+
+    iteration=0
+    
+    while abs(f(x1)) > tol:
+        iteration += 1
+        x_temp = x1-f(x1)*(x1-x0)/(f(x1)-f(x0)) # formula
+        x0, x1 = x1, x_temp # updating values
+    print(f"Secant iteration {iteration}")
+    return x1
+    
+def f(x):
+    return np.exp(x)-2*x-3
+
+bisection_root=bisection_method(f,0,2,1e-6)
+secant_root=secant_method(f,0,2,1e-6)
+print(f"Approximate bisection root: {bisection_root}")
+print(f"Approximate secant root: {secant_root}")
+
+def calculate_errors(true_value, approx_value):
+    absolute_error=abs(true_value-approx_value) #absolute error
+    relative_error=absolute_error/true_value if true_value !=0 else float("inf") # relative error
+    return relative_error
+
+exact_value=1.923938694754772 # secant true_value
+bisection_root=1.9239387512207031 # bisection approx_value
+secant_root=1.923938694754772 # secant approx_value
+bisection_iteration=18
+secant_iteration=5
+bisection_relative_error=calculate_errors(exact_value,bisection_root)
+secant_relative_error=calculate_errors(exact_value,secant_root)
+
+print(f"Bisection relative error {bisection_relative_error}")
+print(f"Secant relative error {secant_relative_error}")
+
+if bisection_iteration < secant_iteration:
+    print("Bisection Method is more efficient in this case.")
+elif secant_iteration < bisection_iteration:
+    print("Secant Method is more efficient in this case.")
+else:
+    print("Both methods are equally efficient in terms of iterations.")
