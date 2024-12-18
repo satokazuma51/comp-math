@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 def newton_raphson(f,df,x0,tol):
     x=x0
     while abs(f(x))>tol:
-        x=x-f(x)/df(x) # Formula
+        x=x-f(x)/df(x)
     return x
 
 def f(x):
@@ -16,11 +16,11 @@ def df(x):
 root=newton_raphson(f,df,2.5,1e-6)
 print(f"Root: {root}")
 
-x=np.linspace(1,4,500) # Range of x values
+x=np.linspace(1,4,500)
 y=f(x)
 
 def calculate_error(true_value, approx_value):
-    absolute_error=abs(true_value - approx_value) # absolute error
+    absolute_error=abs(true_value - approx_value) 
     return absolute_error
 
 true_value=2.6906474992568943 # true value
